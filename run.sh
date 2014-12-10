@@ -29,6 +29,8 @@ body="<InvalidationBatch><Path>$WERCKER_CF_INVALIDATE_PATH</Path><CallerReferenc
 sig="$(printf "$date" | openssl sha1 -binary -hmac "$WERCKER_CF_INVALIDATE_KEY_SECRET" | base64)"
 
 curl https://cloudfront.amazonaws.com/2010-08-01/distribution/$WERCKER_CF_INVALIDATE_DISTRIBUTION_ID/invalidation \
+-X POST \
+-d "$body" \
 -H "Date: $date" \
 -H "Authorization: AWS $WERCKER_CF_INVALIDATE_KEY_ID:$sig" \
 -H "Content-Type: $content_type"
